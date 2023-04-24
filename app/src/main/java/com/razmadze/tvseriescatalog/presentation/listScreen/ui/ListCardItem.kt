@@ -1,38 +1,41 @@
-package com.razmadze.tvseriescatalog.ui.listScreen
+package com.razmadze.tvseriescatalog.presentation.listScreen.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.razmadze.tvseriescatalog.R
+import com.razmadze.tvseriescatalog.extensions.voteAverageFormatter
 import com.razmadze.tvseriescatalog.models.SeriesEntry
+import com.razmadze.tvseriescatalog.presentation.theme.CardTextColor
+import com.razmadze.tvseriescatalog.presentation.theme.VoteIconColor
 
 @Composable
 fun ListCardItem(
     entry: SeriesEntry,
-    navController: NavController,
-    viewModel: ListViewModel = hiltViewModel()
+    navController: NavController
 ) {
     Card(
         modifier = Modifier
@@ -42,15 +45,11 @@ fun ListCardItem(
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
-                onClick = {
-                    navController.navigate(
-                        "pokemon_detail_screen/${entry.id}"
-                    )
-                }),
+                onClick = { navController.navigate("series_detail_screen/${entry.id}") }
+            ),
         shape = RoundedCornerShape(8.dp),
         elevation = 4.dp,
-    )
-    {
+    ) {
         Row(
             Modifier
                 .padding(15.dp)
@@ -69,8 +68,8 @@ fun ListCardItem(
                     .width(100.dp)
                     .height(100.dp)
                     .clip(CircleShape),
-                placeholder = painterResource(id = R.drawable.ic_launcher_background),
-                error = painterResource(id = R.drawable.ic_launcher_background) //todo shesacvlelia fotoebi
+                placeholder = painterResource(id = R.drawable.loading_icon),
+                error = painterResource(id = R.drawable.image_not_available_narrow)
             )
             Column(
                 verticalArrangement = Arrangement.Top,
@@ -82,21 +81,30 @@ fun ListCardItem(
                 Text(
                     text = entry.name,
                     style = MaterialTheme.typography.subtitle1,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = CardTextColor
                 )
-                Text(
-                    text = entry.firstAirDate?:"unknown",
-                    style = MaterialTheme.typography.caption,
-                    modifier = Modifier
-                        .background(Color.LightGray)
-                        .padding(4.dp)
-                )
-                Text(
-                    text = entry.voteAverage.toString(),
-                    style = MaterialTheme.typography.body1,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
+                Spacer(modifier = Modifier.size(10.dp))
+                Row (horizontalArrangement = Arrangement.spacedBy(20.dp)){
+                    Text(
+                        text = entry.firstAirDate ?: "",
+                        fontSize = 13.sp
+                    )
+                    Row {
+                        Icon(
+                            imageVector = Icons.Default.StarRate,
+                            tint = VoteIconColor,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(18.dp)
+                                .align(Alignment.CenterVertically)
+                        )
+                        Text(
+                            text =  stringResource(id=R.string.vote_text, entry.voteAverage.voteAverageFormatter()),
+                            fontSize = 13.sp
+                        )
+                    }
+                }
             }
         }
     }

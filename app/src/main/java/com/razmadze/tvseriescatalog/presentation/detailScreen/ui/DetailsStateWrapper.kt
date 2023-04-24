@@ -1,19 +1,19 @@
-package com.razmadze.tvseriescatalog.ui.detailScreen
+package com.razmadze.tvseriescatalog.presentation.detailScreen.ui
 
-import androidx.compose.foundation.layout.offset
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import com.razmadze.tvseriescatalog.models.Series
+import androidx.navigation.NavController
+import com.razmadze.tvseriescatalog.models.SeriesDetails
 import com.razmadze.tvseriescatalog.utils.Resource
 
 @Composable
 fun DetailsStateWrapper (
-    seriesInfo: Resource<Series>,
+    seriesInfo: Resource<SeriesDetails>,
+    navController: NavController,
     modifier: Modifier = Modifier,
     loadingModifier: Modifier = Modifier
 ) {
@@ -21,8 +21,8 @@ fun DetailsStateWrapper (
         is Resource.Success -> {
             DetailsSection(
                 seriesInfo = seriesInfo.data!!,
+                navController = navController,
                 modifier = modifier
-                    .offset(y = (-20).dp)
             )
         }
         is Resource.Error -> {

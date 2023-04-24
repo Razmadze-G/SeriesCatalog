@@ -9,9 +9,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.razmadze.tvseriescatalog.ui.detailScreen.DetailsScreen
-import com.razmadze.tvseriescatalog.ui.listScreen.ListScreen
-import com.razmadze.tvseriescatalog.ui.theme.TVSeriesCatalogTheme
+import com.razmadze.tvseriescatalog.presentation.detailScreen.ui.DetailsScreen
+import com.razmadze.tvseriescatalog.presentation.listScreen.ui.ListScreen
+import com.razmadze.tvseriescatalog.presentation.theme.TVSeriesCatalogTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

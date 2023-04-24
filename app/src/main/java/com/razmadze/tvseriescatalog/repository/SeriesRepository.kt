@@ -1,8 +1,8 @@
 package com.razmadze.tvseriescatalog.repository
 
 import com.razmadze.tvseriescatalog.BuildConfig
-import com.razmadze.tvseriescatalog.models.Series
 import com.razmadze.tvseriescatalog.models.PopularSeries
+import com.razmadze.tvseriescatalog.models.SeriesDetails
 import com.razmadze.tvseriescatalog.service.ApiService
 import com.razmadze.tvseriescatalog.utils.Resource
 import com.razmadze.tvseriescatalog.utils.Resource.Success
@@ -37,7 +37,6 @@ class SeriesRepository @Inject constructor(private val service: ApiService) {
         } catch (e: Exception) {
             return Resource.Error(message = "Something went wrong")
         }
-
         return Success(response)
     }
 
@@ -55,7 +54,7 @@ class SeriesRepository @Inject constructor(private val service: ApiService) {
         return Success(response)
     }
 
-    suspend fun getSeriesDetails(seriesId: Int): Resource<Series> {
+    suspend fun getSeriesDetails(seriesId: Int): Resource<SeriesDetails> {
         val response = try {
             service.getSeriesDetails(seriesId, BuildConfig.API_KEY)
         } catch (e: HttpException) {

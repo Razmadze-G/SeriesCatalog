@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">TV Series Catalog</string>
     <string name="tv_series_catalog_logo_description">TV Series Catalog Logo</string>
+    <string name="vote_category">votes %s</string>
+    <string name="first_air_date">First Air Date - </string>
+    <string name="seasons_text">Seasons - </string>
+    <string name="retry">retry</string>
+    <string name="result_not_found">Result Not Found</string>
+    <string name="header_text">Series Catalogue</string>
+    <string name="close_icon_description">Close Icon</string>
+    <string name="text_field_placeholder">Search here…</string>
+    <string name="vote_text">%s/10</string>
 </resources>

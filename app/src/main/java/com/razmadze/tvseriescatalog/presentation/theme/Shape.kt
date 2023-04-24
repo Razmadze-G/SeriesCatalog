@@ -1,4 +1,4 @@
-package com.razmadze.tvseriescatalog.ui.theme
+package com.razmadze.tvseriescatalog.presentation.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

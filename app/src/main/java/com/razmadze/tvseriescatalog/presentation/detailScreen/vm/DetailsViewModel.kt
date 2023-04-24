@@ -1,11 +1,12 @@
-package com.razmadze.tvseriescatalog.ui.listScreen
+package com.razmadze.tvseriescatalog.presentation.detailScreen.vm
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.razmadze.tvseriescatalog.models.SeriesDetails
 import com.razmadze.tvseriescatalog.models.SeriesEntry
+import com.razmadze.tvseriescatalog.presentation.detailScreen.state.DetailsStateModel
 import com.razmadze.tvseriescatalog.repository.SeriesRepository
-import com.razmadze.tvseriescatalog.utils.Constants.IMAGE_BASE_URL
+import com.razmadze.tvseriescatalog.utils.Constants
 import com.razmadze.tvseriescatalog.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,24 +15,24 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ListViewModel @Inject constructor(private val repository: SeriesRepository) : ViewModel() {
-    private val seriesList = mutableStateOf<List<SeriesEntry>>(listOf())
-    val state = MutableStateFlow(ListingStateModel())
+class DetailsViewModel @Inject constructor(private val repository: SeriesRepository): ViewModel() {
+    private val similarSeriesList = mutableListOf<SeriesEntry>()
+    val state = MutableStateFlow(DetailsStateModel())
 
-    init {
-        loadPagination()
+    suspend fun getSeriesDetails(seriesId: Int): Resource<SeriesDetails> {
+        return repository.getSeriesDetails(seriesId)
     }
 
-    fun loadPagination() {
+    fun loadPagination(id: Int) {
         viewModelScope.launch {
             state.update {
                 it.copy(isLoading = true)
             }
-            when (val result = repository.getPopularSeriesList(state.value.pageNumber)) {
+            when (val result = repository.getSimilarSeriesList(seriesId = id, state.value.pageNumber)) {
                 is Resource.Success -> {
                     val entries = result.data!!.seriesList.mapIndexed { _ , value ->
                         SeriesEntry(
-                            imagePath = IMAGE_BASE_URL + value.posterPath,
+                            imagePath = Constants.IMAGE_BASE_URL + value.posterPath,
                             name = value.name,
                             id = value.id,
                             overview = value.overview,
@@ -39,10 +40,10 @@ class ListViewModel @Inject constructor(private val repository: SeriesRepository
                             firstAirDate = value.firstAirDate
                         )
                     }
-                    seriesList.value += entries
+                    similarSeriesList += entries
                     state.update {
                         it.copy(
-                            seriesList = seriesList.value,
+                            similarSeriesList = similarSeriesList,
                             loadError = "",
                             isLoading = false,
                             pageNumber = it.pageNumber+1
@@ -59,7 +60,6 @@ class ListViewModel @Inject constructor(private val repository: SeriesRepository
                 }
                 else -> {}
             }
-
         }
     }
 }

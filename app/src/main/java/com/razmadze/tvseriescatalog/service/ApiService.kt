@@ -1,7 +1,7 @@
 package com.razmadze.tvseriescatalog.service
 
-import com.razmadze.tvseriescatalog.models.Series
 import com.razmadze.tvseriescatalog.models.PopularSeries
+import com.razmadze.tvseriescatalog.models.SeriesDetails
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -33,19 +33,6 @@ interface ApiService {
     suspend fun getSeriesDetails(
         @Path("tv_id") seriesID: Int,
         @Query("api_key") apiKey: String,
-    ): Series
+    ): SeriesDetails
 
-//    companion object {
-//        var apiService: ApiService? = null
-//        fun getInstance() : ApiService {
-//            if (apiService == null) {
-//                apiService = Retrofit.Builder()
-//                    .baseUrl(BASE_URL)
-//                    .addConverterFactory(GsonConverterFactory.create())
-//                    .build()
-//                    .create(ApiService::class.java)
-//            }
-//            return apiService!!
-//        }
-//    }
 }
