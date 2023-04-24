@@ -40,7 +40,10 @@ class SeriesRepository @Inject constructor(private val service: ApiService) {
         return Success(response)
     }
 
-    suspend fun getSearchSeriesList(pageNumber: Int, searchKeyWord: String): Resource<PopularSeries> {
+    suspend fun getSearchSeriesList(
+        pageNumber: Int,
+        searchKeyWord: String
+    ): Resource<PopularSeries> {
         val response = try {
             service.getSearchSeriesList(BuildConfig.API_KEY, searchKeyWord, pageNumber)
         } catch (e: HttpException) {

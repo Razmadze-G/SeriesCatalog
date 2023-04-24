@@ -21,7 +21,7 @@ class ApplicationModule {
 
     @Singleton
     @Provides
-    fun providesApiService(): ApiService{
+    fun providesApiService(): ApiService {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(BASE_URL)
